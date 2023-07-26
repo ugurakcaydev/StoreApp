@@ -5,8 +5,11 @@ import axios from "axios"
 import Link from 'next/link'
 import "./product.css"
 import { data } from 'autoprefixer'
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 
 const Product =() => {
+  
     const [allData,setAllData] = useState([])
     const [loading,setLoading] = useState(true)
 
@@ -16,32 +19,49 @@ const Product =() => {
                 const {data} =await axios.get('https://fakestoreapi.com/products')
                 setAllData(data)
                 setLoading(false)
-                console.log(data);
+            
             }
             getData()     
     },[])
 
-
+    const notify = (product) => toast.success(`${product.title} Başarıyla Eklendi`);
   return (
     loading ? <div>Loading ....</div> :
+    <>
     <div className='productContainer'>
         {
             allData.map((data,index)=>(
-                <Link href={`/product/${data.id}`} key={index} className='productItemContainer'>        
+                <div key={index} className='productItemContainer'>     
+                    <Link href={`/product/${data.id}`} className='linkDiv'> 
                     <div className='productImageDiv'>
                         <img style={{width:"100%",height:"100%",objectFit:"contain"}} src={data?.image} alt={data.title}/>
                     </div>                    
                     <div className='productTitleDiv'>{data?.title}</div>
                     <div className='productPriceDiv'>{`${data.price} TL`}</div>
+                    </Link>
                     <div className='addCartButton'>
-                        <button>
+                        <button onClick={() => notify(data)}>
                             Sepete Ekle
                         </button>
                     </div>
-                </Link>
+                </div>
             ))
         }
+        
     </div>
+    <ToastContainer
+    position="bottom-left"
+    autoClose={5000}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    // pauseOnFocusLoss
+    draggable
+    // pauseOnHover
+    theme="colored"
+    />
+    </>
   )
 }
 
