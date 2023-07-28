@@ -1,46 +1,52 @@
-'use client'
-import React, { useState,useEffect } from 'react'
-import {useNavigate} from "react-router-dom"
-import axios from "axios"
+"use client"
+import React from 'react'
+
+
 import Link from 'next/link'
 import "./product.css"
-import { data } from 'autoprefixer'
 import { ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css';
+import { ProductList } from './product.util'
 
-const Product =() => {
-  
-    const [allData,setAllData] = useState([])
-    const [loading,setLoading] = useState(true)
 
-    useEffect(()=>{
-            const getData = async()=>{
-                setLoading(true)
-                const {data} =await axios.get('https://fakestoreapi.com/products')
-                setAllData(data)
-                setLoading(false)
-            
-            }
-            getData()     
-    },[])
 
-    const notify = (product) => toast.success(`${product.title} Başarıyla Eklendi`);
+
+const Product =() => { 
+    
+    const addBasket = (data) => {
+    const basketItems = JSON.parse( localStorage.getItem("basket"))??[]
+    const existingItem = basketItems.find((item) => item.id === data.id);
+    if (existingItem) {
+      // Ürün zaten sepette varsa, ürün adedini artır
+    
+        basketItems.forEach((item) =>
+          item.id === data.id ? item.productQuantity++ : item
+        )
+
+    } else {
+    basketItems.push({ id:data.id, productQuantity: 1 })
+      
+      
+    }
+    localStorage.setItem("basket",JSON.stringify(basketItems))
+  };
+    
+
   return (
-    loading ? <div>Loading ....</div> :
-    <>
+    
     <div className='productContainer'>
         {
-            allData.map((data,index)=>(
+            ProductList.map((data,index)=>(
                 <div key={index} className='productItemContainer'>     
                     <Link href={`/product/${data.id}`} className='linkDiv'> 
                     <div className='productImageDiv'>
-                        <img style={{width:"100%",height:"100%",objectFit:"contain"}} src={data?.image} alt={data.title}/>
+                        <img style={{width:"100%",height:"100%",objectFit:"contain"}} src={data?.productImage} alt={data.title}/>
                     </div>                    
-                    <div className='productTitleDiv'>{data?.title}</div>
-                    <div className='productPriceDiv'>{`${data.price} TL`}</div>
+                    <div className='productTitleDiv'>{data?.productName}</div>
+                    <div className='productPriceDiv'>{`${data?.productPrice} TL`}</div>
                     </Link>
                     <div className='addCartButton'>
-                        <button onClick={() => notify(data)}>
+                        <button onClick={()=>addBasket(data)}>
                             Sepete Ekle
                         </button>
                     </div>
@@ -49,19 +55,8 @@ const Product =() => {
         }
         
     </div>
-    <ToastContainer
-    position="bottom-left"
-    autoClose={5000}
-    hideProgressBar={false}
-    newestOnTop={false}
-    closeOnClick
-    rtl={false}
-    // pauseOnFocusLoss
-    draggable
-    // pauseOnHover
-    theme="colored"
-    />
-    </>
+    
+    
   )
 }
 
