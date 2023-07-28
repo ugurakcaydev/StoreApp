@@ -1,5 +1,6 @@
 import React from 'react'
 import "./navBar.css"
+import Link from 'next/link'
 
 function Navbar() {
   return (
@@ -13,7 +14,7 @@ function Navbar() {
                   <li>Hakkımızda</li>
                   <li>İletişim</li>
                   <li>SSS</li>
-                  <li>Sepet</li>
+                  <Link href={"/Basket/Basket"}>Sepet</Link>
                 </ul>
             </div>
             <div className="authContainer">
