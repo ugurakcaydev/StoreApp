@@ -19,7 +19,6 @@ export const ProductList = [
         productName:"Ürün Adı 3",
         productPrice:100,
         productDescription:"Ürün Açıklaması",
-        
         productQuantity:0,
     },
     {

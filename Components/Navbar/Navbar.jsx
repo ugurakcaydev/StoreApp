@@ -14,7 +14,7 @@ function Navbar() {
                   <li>Hakkımızda</li>
                   <li>İletişim</li>
                   <li>SSS</li>
-                  <Link href={"/Basket"}>Sepet</Link>
+                  <li><Link href={"/Basket"}>Sepet</Link></li>
                 </ul>
             </div>
             <div className="authContainer">
