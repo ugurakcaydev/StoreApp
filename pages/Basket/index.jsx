@@ -1,14 +1,13 @@
-'use client'
 
+import Basket from "../../Components/Basket/Basket"
 
-const  Basket= () => {
-   const basketArray =  JSON.parse(localStorage.getItem("basket")) 
-   console.log(basketArray);
+const  BasketPage= () => {
+  
   return (
     <div>
-        Basket
+        <Basket/>
     </div>
   )
 }
 
-export default Basket
+export default BasketPage

@@ -24,7 +24,14 @@ const Product =() => {
         )
 
     } else {
-    basketItems.push({ id:data.id, productQuantity: 1 })
+    basketItems.push(
+      { 
+      id:data.id,
+      productName:data.productName,
+      productPrice:data.productPrice,
+      productDescription:data.productDescription, 
+      productQuantity: 1 
+    })
       
       
     }
