@@ -1,19 +1,38 @@
-import { useEffect } from "react";
+import { useEffect, useState } from 'react';
 
+const Basket = () => {
+  const [basketArray, setBasketArray] = useState([]);
 
-
-const  Basket= () => {
-    if (typeof window !== 'undefined') {
+  useEffect(() => {
+    const fetchBasket = async () => {
+      if (typeof window !== 'undefined') {
         // Perform localStorage action
-        const basketArray =JSON.parse(localStorage.getItem('basket')) 
-        console.log(basketArray);
+        const basketFromLocalStorage = localStorage.getItem('basket');
+        if (basketFromLocalStorage) {
+          const parsedBasket = JSON.parse(basketFromLocalStorage);
+          setBasketArray(parsedBasket);
+        }
       }
-   
-   return (
-     <div>
-         Basket
-     </div>
-   )
- }
- 
- export default Basket
+    };
+
+    fetchBasket();
+  }, []);
+
+  return (
+    <div>
+      {basketArray.map((item) => {
+        return (
+          <div key={item.id}>
+            {/* Burada ürün özelliklerini görüntüleyebilirsiniz */}
+            <div>{item.id}</div>
+            <div>{item.productName}</div>
+            <div>{item.productPrice}</div>
+            <div>{item.productDescription}</div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+export default Basket;
